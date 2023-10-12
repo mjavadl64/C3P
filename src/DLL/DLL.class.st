@@ -19,7 +19,7 @@ DLL >> add: anObject [
 { #category : #adding }
 DLL >> add: anObject after: otherObject [
 
-[self include: otherObject] 
+(self include: otherObject )
   ifTrue: [self add: anObject].
 
 ^ anObject 
@@ -34,7 +34,7 @@ first := Nodes new.
 second := Nodes new.
 first data: anObject.
 second data: secondObject.
- [self include: secondObject]
+ (self include: secondObject)
 		ifTrue: [ first next: second .
 					  second pre: first.
 					head := first.
@@ -68,7 +68,7 @@ DLL >> elements [
 element := OrderedCollection new.
 head2 := head.
 head2  ifNil: [ ^0 ].
-head2 isNotNil whileTrue: [
+[head2 isNotNil] whileTrue: [
 	  element add: head2 data.
 	  head2 := head2 next ].
 ^ element 
