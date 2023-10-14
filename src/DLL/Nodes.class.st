@@ -34,6 +34,11 @@ Nodes >> next: anObject [
 ]
 
 { #category : #accessing }
+Nodes >> pre [
+	^ pre
+]
+
+{ #category : #accessing }
 Nodes >> pre: anObject [
 	pre := anObject 
 ]

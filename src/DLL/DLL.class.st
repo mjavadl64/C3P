@@ -19,28 +19,62 @@ DLL >> add: anObject [
 { #category : #adding }
 DLL >> add: anObject after: otherObject [
 
-(self include: otherObject )
-  ifTrue: [self add: anObject].
+|tailtemp seconobject temp|
+seconobject := Nodes new.
+seconobject data: otherObject .
+(head = tail) | (tail data = seconobject data ) 
+  ifTrue: [^self add: anObject].
+tailtemp := tail.
+[tailtemp isNotNil] whileTrue: [ 
+	temp := tailtemp .
+	tailtemp := tailtemp pre.
+	tailtemp data = seconobject data
+	ifTrue: [ 
+		tailtemp next: seconobject.
+		seconobject pre: tailtemp.
+		seconobject next: tailtemp next.
+		temp pre: seconobject  ].
+	 ].
+^ seconobject 
 
-^ anObject 
-  
 ]
 
 { #category : #adding }
 DLL >> add: anObject befor: secondObject [
 
-|first second|
+|head2 first second temp|
 first := Nodes new.
 second := Nodes new.
+temp := Nodes new.
 first data: anObject.
 second data: secondObject.
- (self include: secondObject)
-		ifTrue: [ first next: second .
-					  second pre: first.
-					head := first.
-					tail:= second ].
+(head = tail) | (head data = second data) 
+ ifTrue: [ ^self addFirst: anObject  ].
+head2 := head.
+[ head2 isNotNil ] whileTrue: [ 
+	(head2 data = second data) ifTrue: [ 
+		 first next: head2.
+		 first pre: head2 pre.
+		 head2 pre: first. 
+		 temp next: first. 
+		 ^first ].
+		 temp := head2.
+		 head2 := head2 next. ]. 
 				
-^ anObject 
+^ first 
+]
+
+{ #category : #adding }
+DLL >> addFirst: anObject [
+
+|temp|
+temp:= Nodes new.
+temp data: anObject .
+temp next: head.
+head ifNotNil: [ head pre: temp ]. 
+tail := head. 
+head := temp. 
+^ temp
 ]
 
 { #category : #adding }
@@ -49,16 +83,11 @@ DLL >> addLast: anObject [
 |temp|
 temp:= Nodes new.
 temp data: anObject .
-head ifNil: [ tail:= temp.
-	head:= temp.
-	head next: temp.
-	tail pre: head.
-	^ temp ].
-head next: temp.
-tail pre: temp.
+tail ifNotNil: [ tail next: temp ].
+head ifNil: [ head := temp  ].
 tail := temp.
 
-^ anObject 
+^ temp 
 ]
 
 { #category : #calcul }
@@ -97,5 +126,5 @@ temp := head.
 [temp isNotNil] whileTrue: [ 
 	 counter := counter + 1.
 	 temp := temp next].
-^ counter+1
+^ counter
 ]

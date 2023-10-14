@@ -19,7 +19,12 @@ DLLTests >> testAddAfter [
 
 dll add: 6.
 dll add: 43 after: 6.
-self assert: dll elements asArray equals: #(6 43)
+self assert: dll elements asArray equals: #(6 43).
+dll add: 9.
+dll add: 5 after: 9.
+self assert: dll elements asArray equals: #(6 43 9 5).
+
+
 ]
 
 { #category : #running }
@@ -28,8 +33,20 @@ DLLTests >> testAddBefor [
 dll add: 9.
 dll add: 28 befor: 9.
 self assert: dll elements asArray equals: #(28 9).
-dll add:10 befor: 9.
-self assert: dll elements asArray equals: #(28 10 9).
+dll add:10.
+dll add:30 befor: 10.
+self assert: dll elements asArray equals: #(28 9 30 10).
+
+]
+
+{ #category : #running }
+DLLTests >> testAddFirst [ 
+
+dll add: 6.
+dll addFirst: 30.
+self assert: dll elements asArray equals: #(30 6).
+
+
 ]
 
 { #category : #running }
