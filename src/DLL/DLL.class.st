@@ -19,49 +19,53 @@ DLL >> add: anObject [
 { #category : #adding }
 DLL >> add: anObject after: otherObject [
 
-|tailtemp seconobject temp|
-seconobject := Nodes new.
-seconobject data: otherObject .
-(head = tail) | (tail data = seconobject data ) 
-  ifTrue: [^self add: anObject].
-tailtemp := tail.
-[tailtemp isNotNil] whileTrue: [ 
-	temp := tailtemp .
-	tailtemp := tailtemp pre.
-	tailtemp data = seconobject data
-	ifTrue: [ 
-		tailtemp next: seconobject.
-		seconobject pre: tailtemp.
-		seconobject next: tailtemp next.
-		temp pre: seconobject  ].
-	 ].
-^ seconobject 
+|temp objectexist addObject|
+objectexist := Nodes new.
+addObject := Nodes new.
+temp := Nodes new.
+addObject data: anObject .
+"Searche the otherObject(objectexist) in the list"
+(self include: otherObject) ifNil: [ ^false ].
+objectexist := self include: otherObject.
+temp := objectexist  next.
+"We check that if otherObject is the end of list we use method add"
+(tail data = otherObject   ) 
+  ifTrue: [self add: anObject.
+				^objectexist  ].
+"objectexist  ifFalse:  [^ ErrorDialogWindow ]."
+		addObject pre: objectexist .
+		addObject next: objectexist  next.
+		objectexist  next: addObject .
+		temp pre: addObject  .
+	
+
+
 
 ]
 
 { #category : #adding }
-DLL >> add: anObject befor: secondObject [
+DLL >> add: anObject befor: otherObject [
 
-|head2 first second temp|
-first := Nodes new.
-second := Nodes new.
+|temp objectexist addObject|
+objectexist := Nodes new.
+addObject := Nodes new.
 temp := Nodes new.
-first data: anObject.
-second data: secondObject.
-(head = tail) | (head data = second data) 
+addObject data: anObject .
+"Searche the otherObject(objectexist) in the list"
+(self include: otherObject)  ifNil: [ ^false ].
+objectexist := self include: otherObject. 
+temp := objectexist pre. 
+
+"We check that if otherObject is in the top(head) of list we use method addFirst"
+(head data = otherObject ) 
  ifTrue: [ ^self addFirst: anObject  ].
-head2 := head.
-[ head2 isNotNil ] whileTrue: [ 
-	(head2 data = second data) ifTrue: [ 
-		 first next: head2.
-		 first pre: head2 pre.
-		 head2 pre: first. 
-		 temp next: first. 
-		 ^first ].
-		 temp := head2.
-		 head2 := head2 next. ]. 
-				
-^ first 
+"objectexist isFalse: [ ^ErrorDialogWindow  ]."
+  addObject next: objectexist.
+ addObject pre: objectexist  pre.
+ objectexist pre: addObject. 
+ temp next: addObject. 
+	
+
 ]
 
 { #category : #adding }
@@ -74,7 +78,7 @@ temp next: head.
 head ifNotNil: [ head pre: temp ]. 
 tail := head. 
 head := temp. 
-^ temp
+
 ]
 
 { #category : #adding }
@@ -83,16 +87,18 @@ DLL >> addLast: anObject [
 |temp|
 temp:= Nodes new.
 temp data: anObject .
-tail ifNotNil: [ tail next: temp ].
+tail ifNotNil: [ tail next: temp.
+						temp pre: tail ].
 head ifNil: [ head := temp  ].
 tail := temp.
 
-^ temp 
+
 ]
 
 { #category : #calcul }
 DLL >> elements [
 
+"In this method we get the elements and send them to an OrderedCollection"
 |head2 element|
 element := OrderedCollection new.
 head2 := head.
@@ -106,14 +112,13 @@ head2  ifNil: [ ^0 ].
 { #category : #adding }
 DLL >> include: anObjet [
 
-|temp headTemp|
-temp := Nodes new.
-temp data: anObjet.
+|headTemp|
 headTemp := head.
 [headTemp isNotNil] whileTrue: [ 
-	headTemp data = temp data ifTrue: [ ^true ].
+	(headTemp data = anObjet ) 
+		ifTrue: [ ^headTemp  ].
 	headTemp := headTemp next ].
-^false
+^ nil 
 ]
 
 { #category : #calcul }
