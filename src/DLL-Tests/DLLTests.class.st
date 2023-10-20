@@ -46,7 +46,7 @@ DLLTests >> testAddBefor [
 
 dll add: 9.
 dll add: 28 befor: 9.
-self assert: dll elements asArray equals: #(28 9).
+self assert:  dll elements asArray equals: #(28 9).
 
 
 ]
